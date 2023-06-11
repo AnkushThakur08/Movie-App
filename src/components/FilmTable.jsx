@@ -2,7 +2,7 @@ import React from 'react';
 
 const FilmTable = ({ searchResults, handleRowClick }) => {
   return (
-    <table className="table-auto table py-3 mx-3 w-50">
+    <table className="table-auto table py-3 mx-3" style={{ height: '500px', width: '800px' }}>
       <tbody className="p-1">
         {searchResults.map((film, index) => (
           <tr key={film.title} onClick={() => handleRowClick(film)} role="button">

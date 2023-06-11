@@ -16,6 +16,7 @@ function App() {
   const [selectedFilm, setSelectedFilm] = useState(null);
   const [sortAsc, setSortAsc] = useState(true);
   const [filmDetails, setFilmDetails] = useState(null);
+  const [rowClick, setRowClicked] = useState(false);
 
   // UseSelector
   const films = useSelector(selectFilms);
@@ -40,10 +41,11 @@ function App() {
 
   const handleRowClick = async (film) => {
     try {
-      const response = await fetch(`https://omdbapi.com/?t=${encodeURIComponent(film.title)}&apikey=${process.env.REACT_APP_APIKEY}`);
+      const response = await fetch(`https://omdbapi.com/?t=${encodeURIComponent(film.title)}&apikey=ac6e421`);
       const data = await response.json();
       setFilmDetails(data);
       setSelectedFilm(film);
+      setRowClicked(true);
     } catch (error) {
       console.error('Failed to fetch film details:', error);
     }
@@ -74,6 +76,7 @@ function App() {
           <button onClick={handleSort} className="btn btn-primary">
             SORT BY
           </button>
+
           <input
             type="text"
             className="rounded border border-gray-700 py-1 px-3 w-75 mx-3"
@@ -81,6 +84,8 @@ function App() {
             value={input}
             onChange={handleSearch}
           />
+
+          <i class="fa fa-search" aria-hidden="true" style={{ marginLeft: '-3rem' }}></i>
         </div>
       </div>
 
@@ -92,7 +97,11 @@ function App() {
         ) : (
           <div className="d-flex">
             <FilmTable searchResults={searchResults} handleRowClick={handleRowClick} />
-            <FilmDetails filmDetails={filmDetails} averageRating={averageRating} />
+            {rowClick ? (
+              <FilmDetails filmDetails={filmDetails} averageRating={averageRating} />
+            ) : (
+              <p>Please click on the Row to see the Information</p>
+            )}
           </div>
         )}
       </div>
